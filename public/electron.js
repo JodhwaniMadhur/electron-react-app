@@ -1,7 +1,122 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol } = require("electron");
+const { app, BrowserWindow,BrowserView, protocol,Menu } = require("electron");
 const path = require("path");
 const url = require("url");
+const TITLEBAR_HEIGHT = 50; // px
+// Create the native browser window.
+
+//Function sets up menu for the electron app 
+function setMainMenu() {
+  const template = [
+    {
+      label: 'Edit',
+      submenu: [
+        {
+          role: 'undo'
+        },
+        {
+          role: 'redo'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'cut'
+        },
+        {
+          role: 'copy'
+        },
+        {
+          role: 'paste'
+        },
+        {
+          role: 'pasteandmatchstyle'
+        },
+        {
+          role: 'delete'
+        },
+        {
+          role: 'selectall'
+        }
+      ]
+    },
+    {
+      label: 'View',
+      submenu: [
+        {
+          role: 'reload'
+        },
+        {
+          role: 'forcereload'
+        },
+        {
+          role: 'toggledevtools'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'resetzoom'
+        },
+        {
+          role: 'zoomin'
+        },
+        {
+          role: 'zoomout'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'togglefullscreen'
+        }
+      ]
+    },
+    {
+      role: 'window',
+      submenu: [
+        {
+          role: 'minimize'
+        },
+        {
+          role: 'close'
+        }
+      ]
+    },
+    {
+      role: 'help',
+      submenu: [
+        {
+          label: 'Learn More',
+          click () {
+            shell.openExternal('https://electron.atom.io')
+          }
+        },
+        {
+          label: 'Documentation',
+          click () {
+            shell.openExternal(
+              `https://github.com/electron/electron/tree/v${process.versions.electron}/docs#readme`
+            )
+          }
+        },
+        {
+          label: 'Community Discussions',
+          click () {
+            shell.openExternal('https://discuss.atom.io/c/electron')
+          }
+        },
+        {
+          label: 'Search Issues',
+          click () {
+            shell.openExternal('https://github.com/electron/electron/issues')
+          }
+        }
+      ]
+    }
+  ]
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
 
 // Create the native browser window.
 function createWindow() {
@@ -26,8 +141,7 @@ function createWindow() {
       })
     : "http://localhost:3000";
   mainWindow.loadURL(appURL);
-
-  
+  setMainMenu(); //Calling of menu function to render custom menu.
 }
 
 // Setup a local proxy to adjust the paths of requested files when loading
