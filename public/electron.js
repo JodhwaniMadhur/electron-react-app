@@ -1,74 +1,19 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow,BrowserView, protocol,Menu,dialog } = require("electron");
+const { app, BrowserWindow,BrowserView, protocol,Menu } = require("electron");
 const path = require("path");
 const url = require("url");
-const windows = new Set();
-const openFiles = new Map();
 const TITLEBAR_HEIGHT = 50; // px
 // Create the native browser window.
 
 //Function sets up menu for the electron app 
 function setMainMenu() {
-  if (process.platform === 'darwin') {
-      const name = 'Fire Sale';
-      template.unshift({ label: name });
-  }
   const template = [
     {
       label: 'Edit',
       submenu: [
         {
-          label: 'About ${name}',   
-          accelerator: "F1",      
-          role:'about'
-      }
-      ]
-    },
-    {
-      label: 'File',
-      submenu: [
-      {
-        label: 'New File',
-        accelerator: 'CommandOrControl+N',
-        click(item,mainWindow) {
-          if (mainWindow) {
-            return mainProcess.getFileFromUser(mainWindow);
-          }
-
-          const newWindow = mainProcess.createWindow();
-
-          newWindow.on('show', () => {
-            mainProcess.getFileFromUser(newWindow);
-          });
-        }
-      },
-      {
-        label: 'Open File',
-        accelerator: 'CommandOrControl+O',
-        click(item, focusedWindow) {
-          mainProcess.getFileFromUser(focusedWindow);
+          role: 'about'
         },
-      },
-      {
-        label: 'Save File',
-        accelerator: 'CommandOrControl+S',
-        click(item, focusedWindow) {
-          focusedWindow.webContents.send('save-markdown');
-        },
-      },
-      {
-        label: 'Export HTML',
-        accelerator: 'Shift+CommandOrControl+S',
-        click(item, focusedWindow) {
-          focusedWindow.webContents.send('save-html');
-        },
-      },
-    ],
-  },
-    {
-      
-      label: 'Edit',
-      submenu: [
         {
           role: 'undo'
         },
@@ -97,7 +42,8 @@ function setMainMenu() {
           role: 'selectall'
         },
         {
-          role: 'quit'
+          role: 'quit',
+          accelarator:'Cmd+Q'
         }
       ]
     },
